@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.equipment.equipment.dao.EquipmentTimeMapper">
+
+
+
+    <!--插入数据equipment_time表-->
+    <insert id="insertDataTime" parameterType="com.equipment.equipment.entity.EquipmentTime">
+        insert into equipment_time(id,codeNo,equipment_name, brand,model, manufacture_time, shelf_life,supplier_name,
+		after_sales, detection_time,detection_date, qualified, next_test_time )
+		values(#{id},#{codeNo},#{equipmentName},#{brand},#{model},#{manufactureTime},#{shelfLife},#{supplierName},
+		#{afterSales},#{detectionTime},#{detectionDate},#{qualified},#{nextTestTime});
+    </insert>
+
+    <!--查询全部数据-->
+    <select id="selectAll"  resultType="com.equipment.equipment.entity.EquipmentTime">
+        select id,codeNo,equipment_name equipmentName,brand,model,
+                manufacture_time manufactureTime,shelf_life shelfLife,
+                supplier_name supplierName,after_sales afterSales,
+                detection_time detectionTime,detection_date detectionDate,
+                qualified,next_test_time nextTestTime
+        from equipment_time;
+
+    </select>
+
+    <!--查询表中最后一条数据-->
+    <select id="selectData" resultType="com.equipment.equipment.entity.EquipmentTime">
+       select top 1
+                id,codeNo,equipment_name equipmentName,brand,model,
+                manufacture_time manufactureTime,shelf_life shelfLife,
+                supplier_name supplierName,after_sales afterSales,
+                detection_time detectionTime,detection_date detectionDate,
+                qualified,next_test_time nextTestTime
+        from equipment_time order by id desc
+    </select>
+
+    <select id="getGageDataByCode" resultType="com.equipment.equipment.entity.EquipmentTime">
+        select top 1
+        id,codeNo,equipment_name equipmentName,brand,model,
+        manufacture_time manufactureTime,shelf_life shelfLife,
+        supplier_name supplierName,after_sales afterSales,
+        detection_time detectionTime,detection_date detectionDate,
+        qualified,next_test_time nextTestTime
+        from equipment_time  where codeNo = #{codeNo} order by id desc
+    </select>
+
+    <select id="getB" resultType="com.equipment.equipment.entity.EquipmentTime">
+        select id,codeNo,equipment_name equipmentName,brand,model,
+        manufacture_time manufactureTime,shelf_life shelfLife,
+        supplier_name supplierName,after_sales afterSales,
+        detection_time detectionTime,detection_date detectionDate,qualified,
+        next_test_time nextTestTime from equipment_time
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                or id = #{id}
+            </if>
+            <if test="equipmentName != null">
+                or equipment_name  like #{equipmentName}
+            </if>
+            <if test="brand != null">
+                or brand like #{brand}
+            </if>
+            <if test="model != null">
+                or model like #{model}
+            </if>
+            <if test="manufactureTime != null">
+                or manufacture_time like #{manufactureTime}
+            </if>
+            <if test="shelfLife != null">
+                or shelf_life like #{shelfLife}
+            </if>
+            <if test="supplierName != null">
+                or supplier_name like #{supplierName}
+            </if>
+            <if test="afterSales != null">
+                or after_sales like #{afterSales}
+            </if>
+            <if test="detectionTime != null">
+                or detection_time like #{detectionTime}
+            </if>
+            <if test="detectionDate != null">
+                or detection_date like #{detectionDate}
+            </if>
+            <if test="qualified != null">
+                or qualified like #{qualified}
+            </if>
+            <if test="nextTestTime != null">
+                or  next_test_time like #{nextTestTime}
+            </if>
+        </trim>
+    </select>
+
+    <!--修改监测数据-->
+    <update id="upshujuA" parameterType="com.equipment.equipment.entity.EquipmentTime">
+        update equipment_time  set detection_date = #{detectionDate},detection_time = #{detectionTime} where id = #{id}
+    </update>
+
+</mapper>

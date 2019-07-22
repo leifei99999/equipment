@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.equipment.equipment.dao.ArmorMapper">
+
+
+
+    <!--插入数据armor表-->
+    <insert id="insertData" parameterType="com.equipment.equipment.entity.Armor" useGeneratedKeys="true" keyProperty="id">
+        insert into armor (id,codeNo, username,affiliationc_ompany, blood_type , brand, model  ,manufacture_time,state,rinse_service,record_image )
+		values(#{id},#{codeNo },#{username },#{affiliationcOmpany},#{bloodType},#{brand},#{model},#{manufactureTime},#{state},#{rinseService},#{recordImage})SELECT @@identity AS ID;
+    </insert>
+
+    <resultMap id="resultmapa" type="com.equipment.equipment.entity.Armor">
+        <result property="id" column="id" />
+        <result property="codeNo" column="codeNo" />
+        <result property="username" column="username" />
+        <result property="affiliationcOmpany" column="affiliationc_ompany" />
+        <result property="bloodType" column="blood_type" />
+        <result property="brand" column="brand" />
+        <result property="model" column="model" />
+        <result property="manufactureTime" column="manufacture_time" />
+        <result property="state" column="state" />
+        <result property="rinseService" column="rinse_service" />
+        <result property="recordImage" column="record_image" />
+
+        <association property="servicePic" javaType="servicePic">
+            <result property="reid" column="reid" />
+            <result property="img" column="img" />
+        </association>
+    </resultMap>
+    <!--查询全部数据-->
+    <select id="selectAll" parameterType="com.equipment.equipment.entity.Armor"  resultMap="resultmapa" >
+        select
+        a.id,a.codeNo,a.username,a.affiliationc_ompany,a.record_image,
+        a.blood_type,a.brand,a.model,a.manufacture_time,
+        a.state,a.rinse_service,s.img,s.reid
+        from armor a ,servicepic s
+        where a.record_image=s.reid
+        and a.rinse_service=#{rinseService};
+    </select>
+
+    <select id="getDataByCode" resultType="com.equipment.equipment.entity.Armor"   resultMap="resultmapa" >
+        select
+
+        id, codeNo, username, affiliationc_ompany, record_image,
+         blood_type, brand, model, manufacture_time,
+         state, rinse_service
+        from armor
+        where rinse_service=#{rinseService}  and codeNo=#{codeNo} ;
+    </select>
+
+
+    <select id="select" parameterType="com.equipment.equipment.entity.Armor"  resultMap="resultmapa" >
+        select
+        /*id,username,affiliationc_ompany,record_image,
+        blood_type,brand,model,manufacture_time,
+        state*/*
+        from armor
+        where rinse_service=#{rinseService};
+    </select>
+    <!--查询表中最后一条数据-->
+    <select id="selectData" parameterType="com.equipment.equipment.entity.Armor" resultMap="resultmapa">
+       select top 1
+        a.id,a.username,a.affiliationc_ompany,a.record_image,
+        a.blood_type,a.brand,a.model,a.manufacture_time,
+        a.state,a.rinse_service,s.img,s.reid
+        from armor a ,servicepic s
+        where a.record_image=s.reid
+        and a.rinse_service=#{rinseService}
+       order by a.id desc;
+    </select>
+    <!--查询表中最后一条数据-->
+    <select id="selectDa" parameterType="com.equipment.equipment.entity.Armor" resultMap="resultmapa">
+       select top 1
+        id,codeNo,username,affiliationc_ompany,record_image,
+        blood_type,brand,model,manufacture_time,
+        state,rinse_service
+        from armor
+        where  rinse_service=#{rinseService}
+       order by id desc;
+    </select>
+    <!--修改状态信息-->
+    <update id="updateState" >
+        update armor set state=#{state} where id=#{id}
+    </update>
+
+    <!--根据id修改信息-->
+    <update id="addInsert" >
+        update armor set  username=#{username},affiliationc_ompany=#{affiliationcOmpany}, blood_type=#{bloodType},
+        brand=#{brand},model=#{model},manufacture_time=#{manufactureTime},state=#{state},rinse_service=#{rinseService}
+        where id=#{id}
+    </update>
+
+    <!--维修模糊-->
+    <select id="getD" resultMap="resultmapa" parameterType="com.equipment.equipment.entity.Armor">
+        select a.id,a.codeNo,a.username,a.affiliationc_ompany,a.record_image,
+        a.blood_type,a.brand,a.model,a.manufacture_time,
+        a.state,a.rinse_service,s.img,s.reid from armor a ,servicepic s
+        where a.record_image=s.reid
+        and a.rinse_service=#{rinseService}
+        <trim>
+            <if test="id!= null">
+                and a.id = #{id}
+            </if>
+            <if test="username!= null">
+                and a.username like #{username}
+            </if>
+            <if test="affiliationcOmpany!= null">
+                and a.affiliationc_ompany like #{affiliationcOmpany}
+            </if>
+            <if test="brand!= null">
+                and a.brand like #{brand}
+            </if>
+            <if test="model!= null">
+                and a.model like #{model}
+            </if>
+            <if test="manufactureTime!= null">
+                and a.manufacture_time like #{manufactureTime}
+            </if>
+
+        </trim>
+
+
+
+    </select>
+<!--清洗模糊-->
+    <select id="getE" resultMap="resultmapa" parameterType="com.equipment.equipment.entity.Armor">
+        select a.id,a.codeNo,a.username,a.affiliationc_ompany,a.record_image,
+        a.blood_type,a.brand,a.model,a.manufacture_time,
+        a.state,a.rinse_service from armor a
+        where a.rinse_service=#{rinseService}
+        <trim>
+            <if test="id!= 0">
+                and a.id = #{id}
+            </if>
+            <if test="username!= null">
+                and a.username like #{username}
+            </if>
+            <if test="affiliationcOmpany!= null">
+                and a.affiliationc_ompany like #{affiliationcOmpany}
+            </if>
+            <if test="brand!= null">
+                and a.brand like #{brand}
+            </if>
+            <if test="model!= null">
+                and a.model like #{model}
+            </if>
+            <if test="manufactureTime!= null">
+                and a.manufacture_time like #{manufactureTime}
+            </if>
+
+        </trim>
+
+
+
+    </select>
+    <!--查询已清洗 未清洗-->
+    <select id="getF" resultType="com.equipment.equipment.entity.Armor" parameterType="com.equipment.equipment.entity.Armor">
+        select * from armor where state = #{state}
+    </select>
+<!--根据id查询-->
+    <select id="selecid" parameterType="com.equipment.equipment.entity.Armor"  resultMap="resultmapa" >
+        select
+        a.id,a.codeNo,a.username,a.affiliationc_ompany,a.record_image,
+        a.blood_type,a.brand,a.model,a.manufacture_time,
+        a.state,a.rinse_service,s.img,s.reid
+        from armor a left join servicepic s
+        on a.record_image=s.reid
+        where a.id = #{id}
+    </select>
+
+
+
+</mapper>

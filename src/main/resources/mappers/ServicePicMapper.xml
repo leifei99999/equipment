@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.equipment.equipment.dao.ServicePicDao">
+<!--插入数据users表-->
+<insert id="addPic" parameterType="com.equipment.equipment.entity.ServicePic" useGeneratedKeys="true" keyProperty="reid">
+        insert into servicepic (img) values (#{img})SELECT @@identity AS ID;
+    </insert>
+</mapper>

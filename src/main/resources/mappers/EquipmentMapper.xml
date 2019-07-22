@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.equipment.equipment.dao.EquipmentMapper">
+
+
+
+    <!--插入数据equipment表-->
+    <insert id="insertData" parameterType="com.equipment.equipment.entity.Equipment">
+        insert into equipment(id,codeNo,equipment_name, brand,model, manufacture_time, shelf_life,supplier_name,
+		after_sales, detection_time,detection_date, qualified)
+		values(#{id},#{codeNo},#{equipmentName},#{brand},#{model},#{manufactureTime},#{shelfLife},#{supplierName},#{afterSales},#{detectionTime},#{detectionDate},#{qualified});
+    </insert>
+
+    <!--查询全部数据-->
+    <select id="selectAll"  resultType="com.equipment.equipment.entity.Equipment">
+        select id,codeNo,equipment_name equipmentName,brand,model,
+                manufacture_time manufactureTime,shelf_life shelfLife,
+                supplier_name supplierName,after_sales afterSales,
+                detection_time detectionTime,detection_date detectionDate,qualified
+         from equipment;
+
+    </select>
+    <!--查询表中最后一条数据-->
+    <select id="selectData" resultType="com.equipment.equipment.entity.Equipment">
+        select top 1 id,codeNo,equipment_name equipmentName,brand,model,
+        manufacture_time manufactureTime,shelf_life shelfLife,
+        supplier_name supplierName,after_sales afterSales,
+        detection_time detectionTime,detection_date detectionDate,qualified
+        from equipment order by id desc
+    </select>
+
+    <select id="getELDataByCode" resultType="com.equipment.equipment.entity.Equipment">
+       select top 1 id,codeNo,equipment_name equipmentName,brand,model,
+                manufacture_time manufactureTime,shelf_life shelfLife,
+                supplier_name supplierName,after_sales afterSales,
+                detection_time detectionTime,detection_date detectionDate,qualified
+       from equipment where codeNo = #{codeNo}  order by id desc
+    </select>
+
+
+<!--动态sql 模糊查询-->
+    <select id="getA" resultType="com.equipment.equipment.entity.Equipment">
+        select id,codeNo,equipment_name equipmentName,brand,model,
+        manufacture_time manufactureTime,shelf_life shelfLife,
+        supplier_name supplierName,after_sales afterSales,
+        detection_time detectionTime,detection_date detectionDate,qualified from equipment
+         <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+            or id = #{id}
+            </if>
+            <if test="equipmentName != null">
+            or equipment_name  like #{equipmentName}
+            </if>
+            <if test="brand != null">
+            or brand like #{brand}
+            </if>
+             <if test="model != null">
+                 or model like #{model}
+             </if>
+             <if test="manufactureTime != null">
+                 or manufacture_time like #{manufactureTime}
+             </if>
+             <if test="shelfLife != null">
+                 or shelf_life like #{shelfLife}
+             </if>
+             <if test="supplierName != null">
+                 or supplier_name like #{supplierName}
+             </if>
+             <if test="afterSales != null">
+                 or after_sales like #{afterSales}
+             </if>
+             <if test="detectionTime != null">
+                 or detection_time like #{detectionTime}
+             </if>
+             <if test="detectionDate != null">
+                 or detection_date like #{detectionDate}
+             </if>
+             <if test="qualified != null">
+                 or qualified like #{qualified}
+             </if>
+
+        </trim>
+    </select>
+    <!--修改监测数据-->
+    <update id="upshujuA" parameterType="com.equipment.equipment.entity.Equipment">
+        update equipment  set detection_date = #{detectionDate},detection_time = #{detectionTime} where id = #{id}
+    </update>
+
+
+</mapper>

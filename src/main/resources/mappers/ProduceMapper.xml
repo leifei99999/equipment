@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.equipment.equipment.dao.ProduceDao">
+    <!--插入数据-->
+    <insert id="addOne" parameterType="com.equipment.equipment.entity.Produce">
+        insert into produce(id,codeNo,data,time,inflatingWater,reducedWater,deformation,state,detectionNo,outNo,productNo,experimenter,operator,air) values(#{id},#{codeNo},#{data},#{time},#{inflatingWater},
+        #{reducedWater},#{deformation},#{state}
+        ,#{detectionNo},#{outNo},#{productNo},
+        #{experimenter},#{operator},#{air});
+    </insert>
+    <select id="getAll" resultType="com.equipment.equipment.entity.Produce">
+        select * from produce;
+    </select>
+    <select id="getLast" resultType="com.equipment.equipment.entity.Produce">
+        select top 1 * from produce  order by(CAST(data as varchar(20))+'_'+CAST(time as varchar(20))) desc
+    </select>
+
+    <select id="getProduceByCode" resultType="com.equipment.equipment.entity.Produce">
+       select top 1 * from produce
+          where codeNo = #{codeNo} order by id desc
+    </select>
+
+
+    <select id="getC" resultType="com.equipment.equipment.entity.Produce">
+        select * from produce
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="id != null">
+                or id = #{id}
+            </if>
+            <if test="data != null">
+                or data  like #{data}
+            </if>
+            <if test="time != null">
+                or time like #{time}
+            </if>
+            <if test="inflatingWater != null">
+                or inflatingWater like #{inflatingWater}
+            </if>
+            <if test="reducedWater != null">
+                or reducedWater like #{reducedWater}
+            </if>
+            <if test="deformation != null">
+                or deformation like #{deformation}
+            </if>
+            <if test="state != null">
+                or state like #{state}
+            </if>
+            <if test="detectionNo != null">
+                or detectionNo like #{detectionNo}
+            </if>
+            <if test="outNo != null">
+                or outNo like #{outNo}
+            </if>
+            <if test="productNo != null">
+                or productNo like #{productNo}
+            </if>
+            <if test="experimenter != null">
+                or experimenter like #{experimenter}
+            </if>
+            <if test="operator != null">
+                or  operator like #{operator}
+            </if>
+        </trim>
+    </select>
+
+    <update id="upair" parameterType="com.equipment.equipment.entity.Produce">
+
+        update produce
+        <set>
+            <if test="air != null">air=#{air},</if>
+            <if test="codeNo != null">codeNo=#{codeNo}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+
+</mapper>
