@@ -18,6 +18,33 @@ public class EquipmentTime {
     private  String detectionDate ;
     private  String qualified ;
     private String nextTestTime;
+    private Integer image;
+    private ServicePic servicePic;
+    private String nowtime;
+
+    public String getNowtime() {
+        return nowtime;
+    }
+
+    public void setNowtime(String nowtime) {
+        this.nowtime = nowtime;
+    }
+
+    public ServicePic getServicePic() {
+        return servicePic;
+    }
+
+    public void setServicePic(ServicePic servicePic) {
+        this.servicePic = servicePic;
+    }
+
+    public Integer getImage() {
+        return image;
+    }
+
+    public void setImage(Integer image) {
+        this.image = image;
+    }
 
     public String getNextTestTime() {
         return nextTestTime;

@@ -1,26 +1,18 @@
 package com.equipment.equipment.controller;
-
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.equipment.equipment.entity.Equipment;
 import com.equipment.equipment.service.EquipemtService;
 import com.equipment.equipment.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 @RestController
 @RequestMapping("/respirator")
 public class EquipmentController extends BaseController{
-
     @Autowired
     EquipemtService equipemtService;
-
-
     /**
      * 插入数据equipment表
      * @param equipment 数据对象
@@ -33,7 +25,6 @@ public class EquipmentController extends BaseController{
             equipemtService.addData(equipment);
             return new ResponseResult<Void>(SUCCESS,"插入数据成功");
     }
-
     /**
      * 查询全部数据
      */
@@ -42,7 +33,6 @@ public class EquipmentController extends BaseController{
         List list = equipemtService.listEquipment();
         return new ResponseResult<List<Equipment>>(SUCCESS,list);
     }
-
     /**
      * 查询最后一条数据
      */
@@ -77,7 +67,11 @@ public class EquipmentController extends BaseController{
         }
     }
 
-
+    /**
+     * 通过二维码获取信息
+     * @param equipment
+     * @return
+     */
     @RequestMapping("/getEquipmentByCode")
     public ResponseResult<List<Equipment>> getDataByCode(@RequestBody Equipment equipment){
         List<Equipment> getmh = equipemtService.getDataByCode(equipment);

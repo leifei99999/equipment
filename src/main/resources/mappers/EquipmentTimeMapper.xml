@@ -7,50 +7,76 @@
 
     <!--插入数据equipment_time表-->
     <insert id="insertDataTime" parameterType="com.equipment.equipment.entity.EquipmentTime">
-        insert into equipment_time(id,codeNo,equipment_name, brand,model, manufacture_time, shelf_life,supplier_name,
-		after_sales, detection_time,detection_date, qualified, next_test_time )
+        insert into equipment_time(id,codeNo,equipment_name, brand,model, manufacture_time,
+        shelf_life,supplier_name,after_sales, detection_time,detection_date, qualified, next_test_time,image )
 		values(#{id},#{codeNo},#{equipmentName},#{brand},#{model},#{manufactureTime},#{shelfLife},#{supplierName},
-		#{afterSales},#{detectionTime},#{detectionDate},#{qualified},#{nextTestTime});
+		#{afterSales},#{detectionTime},#{detectionDate},#{qualified},#{nextTestTime},#{image});
     </insert>
 
-    <!--查询全部数据-->
-    <select id="selectAll"  resultType="com.equipment.equipment.entity.EquipmentTime">
-        select id,codeNo,equipment_name equipmentName,brand,model,
-                manufacture_time manufactureTime,shelf_life shelfLife,
-                supplier_name supplierName,after_sales afterSales,
-                detection_time detectionTime,detection_date detectionDate,
-                qualified,next_test_time nextTestTime
-        from equipment_time;
+    <resultMap id="resultmapa" type="com.equipment.equipment.entity.EquipmentTime">
+        <result property="id" column="id" />
+        <result property="codeNo" column="codeNo" />
+        <result property="equipmentName" column="equipment_name" />
+        <result property="brand" column="brand" />
+        <result property="model" column="model" />
+        <result property="manufactureTime" column="manufacture_time" />
+        <result property="shelfLife" column="shelf_life" />
+        <result property="supplierName" column="supplier_name" />
+        <result property="afterSales" column="after_sales" />
+        <result property="detectionTime" column="detection_time" />
+        <result property="detectionDate" column="detection_date" />
+        <result property="qualified" column="qualified" />
+        <result property="image" column="image" />
+        <result property="nextTestTime" column="next_test_time" />
 
+        <association property="servicePic" javaType="servicePic">
+            <result property="reid" column="reid" />
+            <result property="img" column="img" />
+        </association>
+    </resultMap>
+
+    <!--查询全部数据-->
+    <select id="selectAll"  resultMap="resultmapa">
+        select e.id,e.codeNo,e.equipment_name,e.brand,e.model,
+                e.manufacture_time,e.shelf_life,
+                e.supplier_name,e.after_sales,
+                e.detection_time,e.detection_date,e.qualified,
+                e.image,e.next_test_time,s.reid,s.img
+        from equipment_time e left join servicepic s
+        on e.image=s.reid;
     </select>
 
     <!--查询表中最后一条数据-->
-    <select id="selectData" resultType="com.equipment.equipment.entity.EquipmentTime">
-       select top 1
-                id,codeNo,equipment_name equipmentName,brand,model,
-                manufacture_time manufactureTime,shelf_life shelfLife,
-                supplier_name supplierName,after_sales afterSales,
-                detection_time detectionTime,detection_date detectionDate,
-                qualified,next_test_time nextTestTime
-        from equipment_time order by id desc
+    <select id="selectData" resultMap="resultmapa">
+       select top 1 e.id,e.codeNo,e.equipment_name,e.brand,e.model,
+                e.manufacture_time,e.shelf_life,
+                e.supplier_name,e.after_sales,
+                e.detection_time,e.detection_date,e.qualified,
+                e.image,e.next_test_time,s.reid,s.img
+        from equipment_time e left join servicepic s
+        on e.image=s.reid
+        order by id desc
     </select>
 
-    <select id="getGageDataByCode" resultType="com.equipment.equipment.entity.EquipmentTime">
-        select top 1
-        id,codeNo,equipment_name equipmentName,brand,model,
-        manufacture_time manufactureTime,shelf_life shelfLife,
-        supplier_name supplierName,after_sales afterSales,
-        detection_time detectionTime,detection_date detectionDate,
-        qualified,next_test_time nextTestTime
-        from equipment_time  where codeNo = #{codeNo} order by id desc
+    <select id="getGageDataByCode" resultMap="resultmapa">
+        select top 1 e.id,e.codeNo,e.equipment_name,e.brand,e.model,
+                e.manufacture_time,e.shelf_life,
+                e.supplier_name,e.after_sales,
+                e.detection_time,e.detection_date,e.qualified,
+                e.image,e.next_test_time,s.reid,s.img
+       from equipment_time e where codeNo = #{codeNo}
+       order by id desc
     </select>
-
-    <select id="getB" resultType="com.equipment.equipment.entity.EquipmentTime">
-        select id,codeNo,equipment_name equipmentName,brand,model,
-        manufacture_time manufactureTime,shelf_life shelfLife,
-        supplier_name supplierName,after_sales afterSales,
-        detection_time detectionTime,detection_date detectionDate,qualified,
-        next_test_time nextTestTime from equipment_time
+    <!--动态sql 模糊查询-->
+    <select id="getB" resultMap="resultmapa">
+        select e.id,e.codeNo,e.equipment_name,e.brand,e.model,
+        e.manufacture_time,e.shelf_life,
+        e.supplier_name,e.after_sales,
+        e.detection_time,e.detection_date,e.qualified,e.next_test_time,
+        e.image,s.reid,s.img
+        from equipment_time e
+        left join servicepic s
+        on e.image=s.reid
         <trim prefix="where" prefixOverrides="and|or">
             <if test="id != null">
                 or id = #{id}

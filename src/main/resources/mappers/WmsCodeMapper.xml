@@ -14,9 +14,8 @@
 
 
     <select id="getData" parameterType="com.equipment.equipment.entity.WmsCode"  resultMap="resultmapa" >
-        select
-         codeId,codeNo,materialId
-        from wms_code
+        SELECT   codeNo,MaterialName,  MaterialSpec , WarehouseName , WarehouseCode , BrandName
+        from VW_WMS_QR
         where codeNo=#{codeNo};
     </select>
 

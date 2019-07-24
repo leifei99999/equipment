@@ -43,11 +43,11 @@ public interface ArmorService {
 
     /**
      * 模糊查询
-     * @param equipment
+     * @param armor
      * @return
      */
 
-     List<Armor> getm(Armor equipment);
+     List<Armor> getm(Armor armor);
 
      List<Armor> getF(Armor armor);
 

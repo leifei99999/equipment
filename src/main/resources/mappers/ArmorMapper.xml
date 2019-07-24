@@ -2,13 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.equipment.equipment.dao.ArmorMapper">
-
-
-
     <!--插入数据armor表-->
     <insert id="insertData" parameterType="com.equipment.equipment.entity.Armor" useGeneratedKeys="true" keyProperty="id">
-        insert into armor (id,codeNo, username,affiliationc_ompany, blood_type , brand, model  ,manufacture_time,state,rinse_service,record_image )
-		values(#{id},#{codeNo },#{username },#{affiliationcOmpany},#{bloodType},#{brand},#{model},#{manufactureTime},#{state},#{rinseService},#{recordImage})SELECT @@identity AS ID;
+        insert into armor (id,codeNo, username,affiliationc_ompany,
+        blood_type , brand, model  ,manufacture_time,state,rinse_service,
+        record_image,nowtime , warehousename, WarehouseId)
+		values(#{id},#{codeNo },#{username },#{affiliationcOmpany},
+		#{bloodType},#{brand},#{model},#{manufactureTime},#{state},
+		#{rinseService},#{recordImage},#{nowtime},#{warehousename},#{WarehouseId})
+		SELECT @@identity AS ID;
     </insert>
 
     <resultMap id="resultmapa" type="com.equipment.equipment.entity.Armor">
@@ -23,6 +25,9 @@
         <result property="state" column="state" />
         <result property="rinseService" column="rinse_service" />
         <result property="recordImage" column="record_image" />
+        <result property="nowtime" column="nowtime" />
+        <result property="warehousename" column="warehousename" />
+        <result property="WarehouseId" column="WarehouseId" />
 
         <association property="servicePic" javaType="servicePic">
             <result property="reid" column="reid" />
@@ -34,7 +39,7 @@
         select
         a.id,a.codeNo,a.username,a.affiliationc_ompany,a.record_image,
         a.blood_type,a.brand,a.model,a.manufacture_time,
-        a.state,a.rinse_service,s.img,s.reid
+        a.state,a.rinse_service,a.nowtime,a.warehousename,a.WarehouseId,s.img,s.reid
         from armor a ,servicepic s
         where a.record_image=s.reid
         and a.rinse_service=#{rinseService};
@@ -42,29 +47,23 @@
 
     <select id="getDataByCode" resultType="com.equipment.equipment.entity.Armor"   resultMap="resultmapa" >
         select
-
         id, codeNo, username, affiliationc_ompany, record_image,
-         blood_type, brand, model, manufacture_time,
-         state, rinse_service
+         blood_type, brand, model, manufacture_time,nowtime
+         state, rinse_service,warehousename,WarehouseId
         from armor
         where rinse_service=#{rinseService}  and codeNo=#{codeNo} ;
     </select>
 
-
     <select id="select" parameterType="com.equipment.equipment.entity.Armor"  resultMap="resultmapa" >
-        select
-        /*id,username,affiliationc_ompany,record_image,
-        blood_type,brand,model,manufacture_time,
-        state*/*
-        from armor
-        where rinse_service=#{rinseService};
+        select * from armor where rinse_service=#{rinseService};
     </select>
+
     <!--查询表中最后一条数据-->
     <select id="selectData" parameterType="com.equipment.equipment.entity.Armor" resultMap="resultmapa">
        select top 1
         a.id,a.username,a.affiliationc_ompany,a.record_image,
         a.blood_type,a.brand,a.model,a.manufacture_time,
-        a.state,a.rinse_service,s.img,s.reid
+        a.state,a.rinse_service,a.nowtime,a.warehousename,a.WarehouseId,s.img,s.reid
         from armor a ,servicepic s
         where a.record_image=s.reid
         and a.rinse_service=#{rinseService}
@@ -75,7 +74,7 @@
        select top 1
         id,codeNo,username,affiliationc_ompany,record_image,
         blood_type,brand,model,manufacture_time,
-        state,rinse_service
+        state,rinse_service,nowtime,a.warehousename,a.WarehouseId
         from armor
         where  rinse_service=#{rinseService}
        order by id desc;
@@ -88,7 +87,9 @@
     <!--根据id修改信息-->
     <update id="addInsert" >
         update armor set  username=#{username},affiliationc_ompany=#{affiliationcOmpany}, blood_type=#{bloodType},
-        brand=#{brand},model=#{model},manufacture_time=#{manufactureTime},state=#{state},rinse_service=#{rinseService}
+        brand=#{brand},model=#{model},manufacture_time=#{manufactureTime},
+        state=#{state},rinse_service=#{rinseService},warehousename = #{warehousename},
+        WarehouseId = #{WarehouseId}
         where id=#{id}
     </update>
 
@@ -96,7 +97,7 @@
     <select id="getD" resultMap="resultmapa" parameterType="com.equipment.equipment.entity.Armor">
         select a.id,a.codeNo,a.username,a.affiliationc_ompany,a.record_image,
         a.blood_type,a.brand,a.model,a.manufacture_time,
-        a.state,a.rinse_service,s.img,s.reid from armor a ,servicepic s
+        a.state,a.rinse_service,a.nowtime,a.warehousename,a.WarehouseId,s.img,s.reid from armor a ,servicepic s
         where a.record_image=s.reid
         and a.rinse_service=#{rinseService}
         <trim>
@@ -125,35 +126,31 @@
 
     </select>
 <!--清洗模糊-->
-    <select id="getE" resultMap="resultmapa" parameterType="com.equipment.equipment.entity.Armor">
-        select a.id,a.codeNo,a.username,a.affiliationc_ompany,a.record_image,
-        a.blood_type,a.brand,a.model,a.manufacture_time,
-        a.state,a.rinse_service from armor a
-        where a.rinse_service=#{rinseService}
+    <select id="getE" resultType="com.equipment.equipment.entity.Armor" parameterType="com.equipment.equipment.entity.Armor">
+        select id,codeNo,username,affiliationc_ompany affiliationcOmpany,record_image recordImage,
+        blood_type bloodType,brand,model,manufacture_time manufactureTime,
+        state,rinse_service rinseService,nowtime,warehousename,WarehouseId from armor
+        where rinse_service=0
         <trim>
-            <if test="id!= 0">
-                and a.id = #{id}
+            <if test="id!= null">
+                and id = #{id}
             </if>
             <if test="username!= null">
-                and a.username like #{username}
+                and username like #{username}
             </if>
             <if test="affiliationcOmpany!= null">
-                and a.affiliationc_ompany like #{affiliationcOmpany}
+                and affiliationc_ompany like #{affiliationcOmpany}
             </if>
             <if test="brand!= null">
-                and a.brand like #{brand}
+                and brand like #{brand}
             </if>
             <if test="model!= null">
-                and a.model like #{model}
+                and model like #{model}
             </if>
             <if test="manufactureTime!= null">
-                and a.manufacture_time like #{manufactureTime}
+                and manufacture_time like #{manufactureTime}
             </if>
-
         </trim>
-
-
-
     </select>
     <!--查询已清洗 未清洗-->
     <select id="getF" resultType="com.equipment.equipment.entity.Armor" parameterType="com.equipment.equipment.entity.Armor">

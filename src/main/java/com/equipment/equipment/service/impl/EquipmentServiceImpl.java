@@ -43,7 +43,7 @@ public class EquipmentServiceImpl implements EquipemtService {
 
     @Override
     public List<Equipment> listEquipment() {
-        List<Equipment> list = selectAll();
+        List<Equipment> list = equipmentMapper.selectAll();
         for(Equipment s :list){
             System.err.println(s.getEquipmentName()+"--------------------------->>");
         }
@@ -97,12 +97,6 @@ public class EquipmentServiceImpl implements EquipemtService {
 
 
 
-    /**
-     * 查询全部数据
-     */
-    private List<Equipment> selectAll(){
-        return equipmentMapper.selectAll();
-    }
 
     /**
      * 查询表中最后一条数据

@@ -38,16 +38,6 @@ public abstract class BaseController {
 		
 		return new ResponseResult<>(state, e);
 	}
-	
-//	/**
-//	 * 从Session中获取uid
-//	 * @param session HttpSession对象
-//	 */
-//	protected Integer getUidFromSession(HttpSession session) {
-//		return Integer.valueOf(
-//				session.getAttribute("uid").toString());
-//	}
-	
 }
 
 

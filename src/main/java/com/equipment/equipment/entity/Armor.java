@@ -1,8 +1,5 @@
 package com.equipment.equipment.entity;
 
-
-import java.util.List;
-
 public class Armor {
 
     private String id ;
@@ -17,6 +14,34 @@ public class Armor {
     private int rinseService; //清洗维修   0:清洗   1:维修
     private Integer recordImage;  //维修记录图片对应图片表id
     private ServicePic servicePic;
+    private String nowtime;
+    private String warehousename;
+    private String WarehouseId;
+
+
+    public String getWarehouseId() {
+        return WarehouseId;
+    }
+
+    public void setWarehouseId(String warehouseId) {
+        WarehouseId = warehouseId;
+    }
+
+    public String getWarehousename() {
+        return warehousename;
+    }
+
+    public void setWarehousename(String warehousename) {
+        this.warehousename = warehousename;
+    }
+
+    public String getNowtime() {
+        return nowtime;
+    }
+
+    public void setNowtime(String nowtime) {
+        this.nowtime = nowtime;
+    }
 
     public String getId() {
         return id;

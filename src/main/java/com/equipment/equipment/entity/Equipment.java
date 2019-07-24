@@ -16,6 +16,25 @@ public class Equipment {
     private String detectionTime ;
     private  String detectionDate ;
     private  String qualified ;
+    private Integer image;
+    private ServicePic servicePic;//图片类对象
+    private String nowtime;
+
+    public String getNowtime() {
+        return nowtime;
+    }
+
+    public void setNowtime(String nowtime) {
+        this.nowtime = nowtime;
+    }
+
+    public ServicePic getServicePic() {
+        return servicePic;
+    }
+
+    public void setServicePic(ServicePic servicePic) {
+        this.servicePic = servicePic;
+    }
 
     public String getId() {
         return id;
@@ -111,6 +130,14 @@ public class Equipment {
 
     public void setQualified(String qualified) {
         this.qualified = qualified;
+    }
+
+    public Integer getImage() {
+        return image;
+    }
+
+    public void setImage(Integer image) {
+        this.image = image;
     }
 
     @Override

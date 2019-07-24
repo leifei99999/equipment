@@ -43,8 +43,6 @@ public class ArmorServiceImpl implements ArmorService {
         } else {
             insertUsers(users);
         }
-
-
     }
 
     @Override
@@ -89,17 +87,6 @@ public class ArmorServiceImpl implements ArmorService {
         }
     }
 
-   /* public Armor upRecordImages(Armor armor) throws UpdateException {
-
-        int i=addRecordImages(armor);
-
-        Images(armor);
-        armor.setRecordImage(null);
-        if (i != 1){
-            throw new UpdateException("上传信息失败！ 请重试");
-        }
-        return armor;
-    }*/
 
     @Override
     public void upInsert(Armor armor) {
@@ -109,12 +96,6 @@ public class ArmorServiceImpl implements ArmorService {
         }
     }
 
-    /**
-     * 上传维修记录图片信息
-     */
-    /*private Integer addRecordImages(Armor armor) {
-        return usersMapper.insertUsers(armor);
-    }*/
 
     /**
      * 查询全部数据
@@ -201,6 +182,7 @@ public class ArmorServiceImpl implements ArmorService {
             equipment.setManufactureTime("%"+equipment.getManufactureTime()+"%");
 
         System.out.println(equipment.getUsername()+"6666");
+        System.out.println(equipment.getAffiliationcOmpany()+"77777777");
         List<Armor> list = null;
         if(equipment.getRinseService() == 1){
 
